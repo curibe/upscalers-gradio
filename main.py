@@ -51,7 +51,7 @@ with gr.Blocks(analytics_enabled=False) as demo:
     gr.Markdown("## Upscaling demo")
     with gr.Row():
         with gr.Column():
-            initial_image = gr.Image()
+            initial_image = gr.Image(type='pil')
             upscaler = gr.Radio(label="Upscaling method", choices=choices, value=choices[0])
             scale = gr.Radio(label="Scale", choices=[2, 4], interactive=True, value=4)
             with gr.Group(visible=False) as ldm_model:
