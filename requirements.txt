@@ -1,5 +1,8 @@
 gradio
 pydantic
 torch
-
+Pillow
 ruff # linter
+git+https://github.com/sberbank-ai/Real-ESRGAN.git
+git+https://github.com/huggingface/diffusers.git
+
