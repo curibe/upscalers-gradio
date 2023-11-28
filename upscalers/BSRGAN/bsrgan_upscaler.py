@@ -13,7 +13,7 @@ from .BSRGAN.utils import utils_image as util
 PARENT_DIR = Path("BSRGAN")
 MODEL_DIR = "model_zoo"
 MODEL_NAME = {4: "BSRGAN.pth", 2: "BSRGANx2.pth"}
-MODEL_URL = f"https://github.com/cszn/KAIR/releases/download/v1.0/{MODEL_NAME}"
+
 
 
 @register_upscaler
@@ -23,6 +23,7 @@ class BSRGAN(UpscalerInterface):
     def __init__(self, params=BSRGANParams):
         self.scale_factor = params.scale
         self.model_path = PARENT_DIR/ MODEL_DIR / MODEL_NAME[self.scale_factor]
+        self.model_url = f"https://github.com/cszn/KAIR/releases/download/v1.0/{MODEL_NAME[self.scale_factor]}"
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.pipeline = self._init_model()
 
@@ -31,7 +32,7 @@ class BSRGAN(UpscalerInterface):
             print(f"Model file '{self.model_path.name}' already exists. Skipping download.")
         else:
             print(f"Downloading model: {self.model_path.name} ...")
-            r = requests.get(MODEL_URL, allow_redirects=True)
+            r = requests.get(self.model_url, allow_redirects=True)
             open(self.model_path, "wb").write(r.content)
             print("Download complete!")
 
