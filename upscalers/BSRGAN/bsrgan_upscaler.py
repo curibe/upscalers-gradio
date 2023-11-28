@@ -10,10 +10,9 @@ from upscalers.interface import UpscalerInterface
 from .BSRGAN.models.network_rrdbnet import RRDBNet as net
 from .BSRGAN.utils import utils_image as util
 
-PARENT_DIR = Path("BSRGAN")
+PARENT_DIR = Path(__file__).resolve().parent / "BSRGAN"
 MODEL_DIR = "model_zoo"
 MODEL_NAME = {4: "BSRGAN.pth", 2: "BSRGANx2.pth"}
-
 
 
 @register_upscaler
@@ -22,7 +21,7 @@ class BSRGAN(UpscalerInterface):
 
     def __init__(self, params=BSRGANParams):
         self.scale_factor = params.scale
-        self.model_path = PARENT_DIR/ MODEL_DIR / MODEL_NAME[self.scale_factor]
+        self.model_path = PARENT_DIR / MODEL_DIR / MODEL_NAME[self.scale_factor]
         self.model_url = f"https://github.com/cszn/KAIR/releases/download/v1.0/{MODEL_NAME[self.scale_factor]}"
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.pipeline = self._init_model()

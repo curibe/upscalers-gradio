@@ -87,4 +87,4 @@ with gr.Blocks(analytics_enabled=False) as demo:
 
     upscale_btn.click(fn=upscaler_factory, inputs=inputs, outputs=[output])
 
-demo.launch(show_error=True)
+demo.launch(show_error=True, share=True)
