@@ -8,7 +8,6 @@ from .registers import register_params_model
 class UpscalerMethodEnum(str, Enum):
     REALESRGAN = "RealESRGAN"
     BSRGAN = "BSRGAN"
-    LATENTX2 = "Latent x2"
     LDMSUPERRESOL4X = "LDM Super Resolution 4x"
     SD4X = "SD 4x"
 
@@ -24,4 +23,9 @@ class LDMSuperResolutionParams(BaseModel):
     eta: int = 1
 
 
-UpscalerParams = Union[RealESRGANParams,LDMSuperResolutionParams]
+@register_params_model(UpscalerMethodEnum.BSRGAN.value)
+class BSRGANParams(BaseModel):
+    scale: int = 4
+
+
+UpscalerParams = Union[RealESRGANParams, LDMSuperResolutionParams, BSRGANParams]
