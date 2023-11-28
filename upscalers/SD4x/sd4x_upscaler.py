@@ -21,7 +21,7 @@ class SD4XUpscaler(UpscalerInterface):
         upscaled_image = self.pipe(
             prompt=self.params.prompt,
             image=image,
-            num_inference_steps=self.params.num_inference_steps,
+            num_inference_steps=self.params.num_steps,
             guidance_scale=self.params.guidance_scale,
         ).images[0]
         return upscaled_image

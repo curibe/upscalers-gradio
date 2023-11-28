@@ -15,7 +15,9 @@ def upscaler_factory(
         scale,
         num_inference_steps,
         eta,
-
+        prompt,
+        num_steps,
+        guidance_scale,
 ):
     # build params dict
     params = locals()
@@ -80,7 +82,7 @@ with gr.Blocks(analytics_enabled=False) as demo:
                 )
                 prompt = gr.Textbox(label='Prompt', placeholder="Enter a prompt to guide the upscaling",
                                     lines=3, interactive=True)
-                sd_num_inference_steps = gr.Slider(label='number of inference steps', value=20, interactive=True,
+                num_steps = gr.Slider(label='number of inference steps', value=20, interactive=True,
                                                    minimum=1, maximum=200)
                 guidance_scale = gr.Slider(label='guidance scale', value=0, interactive=True,
                                                    minimum=0, maximum=20)
@@ -105,7 +107,7 @@ with gr.Blocks(analytics_enabled=False) as demo:
         num_inference_steps,
         eta,
         prompt,
-        sd_num_inference_steps,
+        num_steps,
         guidance_scale
     ]
 

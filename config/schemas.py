@@ -32,7 +32,7 @@ class BSRGANParams(BaseModel):
 @register_params_model(UpscalerMethodEnum.SD4X.value)
 class SD4XParams(BaseModel):
     prompt: str
-    num_inference_steps: int = 20
+    num_steps: int = 20
     guidance_scale: float = 0
 
 
