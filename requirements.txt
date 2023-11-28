@@ -2,6 +2,11 @@ gradio
 pydantic
 torch
 Pillow
+transformers
+accelerate
+torchvision
+opencv-python
+matplotlib
 ruff # linter
 git+https://github.com/sberbank-ai/Real-ESRGAN.git
 git+https://github.com/huggingface/diffusers.git

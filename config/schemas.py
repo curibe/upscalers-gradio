@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Union
 
 from pydantic import BaseModel
+
 from .registers import register_params_model
 
 
@@ -28,4 +29,11 @@ class BSRGANParams(BaseModel):
     scale: int = 4
 
 
-UpscalerParams = Union[RealESRGANParams, LDMSuperResolutionParams, BSRGANParams]
+@register_params_model(UpscalerMethodEnum.SD4X.value)
+class SD4XParams(BaseModel):
+    prompt: str
+    num_inference_steps: int = 20
+    guidance_scale: float = 0
+
+
+UpscalerParams = Union[RealESRGANParams, LDMSuperResolutionParams, BSRGANParams, SD4XParams]

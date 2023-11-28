@@ -15,6 +15,7 @@ def upscaler_factory(
         scale,
         num_inference_steps,
         eta,
+
 ):
     # build params dict
     params = locals()
@@ -36,13 +37,21 @@ def upscaler_factory(
 def set_visible_params_by_upscaler(upscaler):
     if upscaler == UpscalerMethodEnum.REALESRGAN:
         return (gr.Radio(label="Scale", choices=[2,4], interactive=False, value=4),
+                gr.Group(visible=False),
                 gr.Group(visible=False)
                 )
     elif upscaler == UpscalerMethodEnum.LDMSUPERRESOL4X:
         return (gr.Radio(label="Scale", choices=[2,4], interactive=False, value=4),
+                gr.Group(visible=True),
+                gr.Group(visible=False)
+                )
+    elif upscaler == UpscalerMethodEnum.SD4X:
+        return (gr.Radio(label="Scale", choices=[2,4], interactive=False, value=4),
+                gr.Group(visible=False),
                 gr.Group(visible=True)
                 )
     return (gr.Radio(label="Scale", choices=[2, 4], interactive=True, value=4),
+            gr.Group(visible=False),
             gr.Group(visible=False)
             )
 
@@ -63,6 +72,18 @@ with gr.Blocks(analytics_enabled=False) as demo:
                 num_inference_steps = gr.Slider(label='number of inference steps', value=1, interactive=True,
                                                    minimum=1, maximum=200)
                 eta = gr.Number(label='eta', value=1, interactive=True)
+            with gr.Group(visible=False) as sd_model:
+                gr.Markdown(
+                    '''
+                    ####  &nbsp; Additional parameters
+                    '''
+                )
+                prompt = gr.Textbox(label='Prompt', placeholder="Enter a prompt to guide the upscaling",
+                                    lines=3, interactive=True)
+                sd_num_inference_steps = gr.Slider(label='number of inference steps', value=20, interactive=True,
+                                                   minimum=1, maximum=200)
+                guidance_scale = gr.Slider(label='guidance scale', value=0, interactive=True,
+                                                   minimum=0, maximum=20)
 
         with gr.Column(scale=2):
             output = gr.Image(height=512)
@@ -73,7 +94,7 @@ with gr.Blocks(analytics_enabled=False) as demo:
     upscaler.change(
         fn=set_visible_params_by_upscaler,
         inputs=upscaler,
-        outputs=[scale, ldm_model]
+        outputs=[scale, ldm_model, sd_model]
     )
 
     # Define all inpunt for the UI independent of the model chosen
@@ -83,6 +104,9 @@ with gr.Blocks(analytics_enabled=False) as demo:
         scale,
         num_inference_steps,
         eta,
+        prompt,
+        sd_num_inference_steps,
+        guidance_scale
     ]
 
     upscale_btn.click(fn=upscaler_factory, inputs=inputs, outputs=[output])
