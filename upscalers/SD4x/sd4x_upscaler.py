@@ -2,12 +2,14 @@ import torch
 from diffusers import StableDiffusionUpscalePipeline
 
 from config.registers import register_upscaler
-from config.schemas import SD4XParams
+from config.schemas import SD4XParams, UpscalerMethodEnum
 from upscalers.interface import UpscalerInterface
 
 
 @register_upscaler
-class SD4xUpscaler(UpscalerInterface):
+class SD4XUpscaler(UpscalerInterface):
+    name = UpscalerMethodEnum.SD4X.value
+
     def __init__(self, params: SD4XParams):
         self.params = params
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
